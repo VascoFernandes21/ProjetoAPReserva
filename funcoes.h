@@ -25,6 +25,7 @@ int calcularDiferencaDias(char *data1, char *data2);
 void receberData(const char *date, struct tm *tm);
 void registarPagamento(struct Hotel *hotel, struct Reserva *reserva, double valorTotal);
 void mostrarPagamentos(struct Hotel *hotel);
+void guardarPagamentos(struct Hotel *hotel);
 void corrigirPagamento(struct Hotel *hotel);
 void anularPagamento(struct Hotel *hotel);
 

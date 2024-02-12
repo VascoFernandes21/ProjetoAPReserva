@@ -1,0 +1,9 @@
+Pagamentos:
+Pagamento ID: 1
+  Codigo do quarto: 10101
+  Valor: 427.50
+  Forma de pagamento: D
+Pagamento ID: 2
+  Codigo do quarto: 10101
+  Valor: 427.50
+  Forma de pagamento: M

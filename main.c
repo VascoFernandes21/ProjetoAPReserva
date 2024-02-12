@@ -16,6 +16,6 @@ int main() {
     carregarHotel(&hotel);
     menu(&hotel); // Display the menu
     salvarHotel(&hotel);
-    
+    guardarPagamentos(&hotel);
 
 }

@@ -602,6 +602,25 @@ void mostrarPagamentos(struct Hotel *hotel) {
     }
 }
 
+void guardarPagamentos(struct Hotel *hotel) {
+    FILE *arquivo = fopen("pagamentos.txt", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para escrita.\n");
+        return;
+    }
+
+    fprintf(arquivo, "Pagamentos:\n");
+    for (int i = 0; i < hotel->numPagamentos; i++) {
+        struct Pagamento pagamento = hotel->pagamentos[i];
+        fprintf(arquivo, "Pagamento ID: %d\n", pagamento.id);
+        fprintf(arquivo, "  Codigo do quarto: %d\n", pagamento.codigoQuarto);
+        fprintf(arquivo, "  Valor: %.2f\n", pagamento.valor);
+        fprintf(arquivo, "  Forma de pagamento: %c\n", pagamento.formaPagamento);
+    }
+
+    fclose(arquivo);
+}
+
 void corrigirPagamento(struct Hotel *hotel) {
     printf("Insira o ID do pagamento que deseja corrigir: ");
     int idPagamento;
