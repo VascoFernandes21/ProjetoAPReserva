@@ -339,6 +339,7 @@ void menu(struct Hotel *hotel) {
     int codigoQuarto;
     double valorTotalServicos = 0.0;
     double valorServico;
+    char dataInicial[6], dataFinal[6];
     
     while (1) {
         printf("1. Operacoes Clientes\n");
@@ -441,25 +442,41 @@ void menu(struct Hotel *hotel) {
                 }
                 break;
             case 4:
-                printf("1. Check-in\n");
-                printf("2. Check-out\n");
-                printf("3. Listar reservas com check-in\n");
-                printf("4. Listar reservas com check-out\n");
-                            
-                printf("Escolha uma sub-opcao: ");
-                scanf("%d", &subOpcao);
-                            
-                switch (subOpcao) {
-                    case 1:
-                        checkIn(hotel, &ultimoCodigoDefinitivo);
-                        break;
-                    case 2:
-                        checkOut(hotel);
-                        break;
-                    default:
-                        printf("Sub-opcao invalida. Tente novamente.\n");
-                }
-                break;
+    printf("1. Check-in\n");
+    printf("2. Check-out\n");
+    printf("3. Listar reservas com check-in\n");
+    printf("4. Listar reservas com check-out\n");
+    
+    printf("Escolha uma sub-opcao: ");
+    scanf("%d", &subOpcao);
+    
+    switch (subOpcao) {
+        case 1:
+            checkIn(hotel, &ultimoCodigoDefinitivo);
+            break;
+        case 2:
+            checkOut(hotel);
+            break;
+        case 3:
+            // Solicitar datas de início e fim
+            printf("Insira a data inicial (MM/DD): ");
+            scanf("%s", dataInicial);
+            printf("Insira a data final (MM/DD): ");
+            scanf("%s", dataFinal);
+            listarReservasCheckIn(hotel, dataInicial, dataFinal);
+            break;
+        case 4:
+            // Solicitar datas de início e fim
+            printf("Insira a data inicial (MM/DD): ");
+            scanf("%s", dataInicial);
+            printf("Insira a data final (MM/DD): ");
+            scanf("%s", dataFinal);
+            listarReservasCheckOut(hotel, dataInicial, dataFinal);
+            break;
+        default:
+            printf("Sub-opcao invalida. Tente novamente.\n");
+            }
+            break;
             case 5:
                 printf("1. Mostrar Pagamentos\n");
                 printf("2. Corrigir Pagamento\n");
