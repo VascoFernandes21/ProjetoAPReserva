@@ -6,7 +6,11 @@
 #include <stdlib.h>
 
 #include "funcoes.h"
-
+void inicializarQuartos(struct Hotel *hotel) {
+    for (int i = 0; i < 400; i++) {
+        hotel->quartos[i].denominacao = 0;
+    }
+}
 
 void inicializarPrecosBase(struct Hotel *hotel) {
     hotel->precosBase[0] = (struct PrecoBase){'M', 'B', 'S', 50, 10, "03/01", "05/31", 5};
@@ -71,6 +75,107 @@ void inicializarHotel(struct Hotel *hotel) {
     inicializarValoresSuplementares(hotel);
 }
 
+void criarQuartosTeste(struct Hotel *hotel) {
+    struct CaracteristicasQuarto quartosTeste[] = {
+        { .denominacao = 10101, .vista = 'P', .qualidade = 'B', .ocupacaoMaxima = 'D', .torre = 1, .andar = 1, .numeroQuarto = 1 },
+        { .denominacao = 10201, .vista = 'P', .qualidade = 'S', .ocupacaoMaxima = 'D',  .torre = 1, .andar = 2, .numeroQuarto = 1 },
+        { .denominacao = 10301, .vista = 'M', .qualidade = 'B', .ocupacaoMaxima = 'T',  .torre = 1, .andar = 3, .numeroQuarto = 1 },
+        { .denominacao = 10401, .vista = 'P', .qualidade = 'S', .ocupacaoMaxima = 'F',  .torre = 1, .andar = 4, .numeroQuarto = 1 },
+        // Continue adicionando quartos conforme necessario
+    };
+
+    int numQuartosTeste = sizeof(quartosTeste) / sizeof(struct CaracteristicasQuarto);
+
+    for (int i = 0; i < numQuartosTeste; i++) {
+        if (hotel->numQuartos >= 2 * 200) {
+            printf("O hotel ja atingiu o limite de quartos.\n");
+            return;
+        }
+
+        hotel->quartos[hotel->numQuartos++] = quartosTeste[i]; // Incrementa numQuartos após adicionar o quarto
+        printf("Quarto %d criado com sucesso.\n", quartosTeste[i].denominacao);
+    }
+}
+
+
+void criarClientesProvisoriosTeste(struct Hotel *hotel, int *ultimoCodigoProvisorio) {
+    struct Cliente clientesTeste[5] = {
+        {++(*ultimoCodigoProvisorio), "Cliente 1P", "Morada 1", "1234-567", "Localidade 1", "123456789", "01/01", 'N', PROVISORIA},
+        {++(*ultimoCodigoProvisorio), "Cliente 2P", "Morada 2", "2345-678", "Localidade 2", "234567890", "02/02", 'V', PROVISORIA},
+        {++(*ultimoCodigoProvisorio), "Cliente 3P", "Morada 3", "3456-789", "Localidade 3", "345678901", "03/03", 'E', PROVISORIA},
+        {++(*ultimoCodigoProvisorio), "Cliente 4P", "Morada 4", "4567-890", "Localidade 4", "456789012", "04/04", 'N', PROVISORIA},
+        {++(*ultimoCodigoProvisorio), "Cliente 5P", "Morada 5", "5678-901", "Localidade 5", "567890123", "05/05", 'V', PROVISORIA}
+    };
+
+    for (int i = 0; i < 5; i++) {
+        if (hotel->numClientesProvisorios >= 1000) {
+            printf("Limite de clientes provisorios atingido.\n");
+            return;
+        }
+
+        hotel->clientesProvisorios[hotel->numClientesProvisorios++] = clientesTeste[i];
+    }
+
+    printf("\nClientes provisorios de teste criados com sucesso.\n");
+}
+
+void criarClientesDefinitivosTeste(struct Hotel *hotel, int *ultimoCodigoDefinitivo) {
+    struct Cliente clientesTeste[5] = {
+        {++(*ultimoCodigoDefinitivo), "Cliente 1D", "Morada 1", "1234-567", "Localidade 1", "123456789", "01/01", 'N', DEFINITIVA},
+        {++(*ultimoCodigoDefinitivo), "Cliente 2D", "Morada 2", "2345-678", "Localidade 2", "234567890", "02/02", 'V', DEFINITIVA},
+        {++(*ultimoCodigoDefinitivo), "Cliente 3D", "Morada 3", "3456-789", "Localidade 3", "345678901", "03/03", 'E', DEFINITIVA},
+        {++(*ultimoCodigoDefinitivo), "Cliente 4D", "Morada 4", "4567-890", "Localidade 4", "456789012", "04/04", 'N', DEFINITIVA},
+        {++(*ultimoCodigoDefinitivo), "Cliente 5D", "Morada 5", "5678-901", "Localidade 5", "567890123", "05/05", 'V', DEFINITIVA}
+    };
+
+    for (int i = 0; i < 5; i++) {
+        if (hotel->numClientes >= 1000) {
+            printf("Limite de clientes definitivos atingido.\n");
+            return;
+        }
+
+        hotel->clientesDefinitivos[hotel->numClientes++] = clientesTeste[i];
+    }
+
+    printf("\nClientes definitivos de teste criados com sucesso.\n");
+}
+
+void criarReservaTeste(struct Hotel *hotel, int *ultimoNumeroReserva) {
+    if (hotel->numReservas >= 1000) {
+        printf("Limite de reservas atingido.\n");
+        return;
+    }
+
+    struct Reserva novaReserva;
+
+    strcpy(novaReserva.dataReserva, "01/01");
+
+    novaReserva.cliente = &hotel->clientesDefinitivos[0]; // Assume que existe pelo menos um cliente definitivo
+
+    novaReserva.codigoQuarto = 10101; // Assume que o quarto 101 existe
+
+    strcpy(novaReserva.dataCheckIn, "04/02");
+    strcpy(novaReserva.dataCheckOut, "04/07");
+
+    novaReserva.numDias = calcularDiferencaDias(novaReserva.dataCheckIn, novaReserva.dataCheckOut);
+
+    if (!verificarDisponibilidadeQuarto(hotel, novaReserva.codigoQuarto, novaReserva.dataCheckIn) ||
+        !verificarDisponibilidadeQuarto(hotel, novaReserva.codigoQuarto, novaReserva.dataCheckOut)) {
+        printf("O quarto nao esta disponível nas datas selecionadas.\n");
+        return;
+    }
+
+    novaReserva.numPessoas = 1;
+
+    novaReserva.situacaoReserva = 'P';  // Provisoria
+    novaReserva.numeroReserva = ++(*ultimoNumeroReserva);
+
+    strcpy(novaReserva.observacoes, "Reserva de teste");
+
+    hotel->reservas[hotel->numReservas++] = novaReserva;
+
+    printf("\nReserva de teste criada com sucesso.\n");
+}
 
 void inicializarServicosComplementares(struct Hotel *hotel) {
     for (int i = 0; i < 1000; i++) {
@@ -158,7 +263,58 @@ int calcularDiferencaDias(char *data1, char *data2) {
     return difftime(t2, t1) / (60 * 60 * 24);
 }
 
-//TESTEEEEEEEEEEEEEEEEEEEEEEEEE
+// Função para salvar os dados do hotel em um arquivo binário
+void salvarHotel(struct Hotel *hotel) {
+    FILE *arquivo = fopen("hotel.bin", "wb");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para escrita.\n");
+        return;
+    }
+
+    // Escreve os dados do hotel
+    fwrite(hotel, sizeof(struct Hotel), 1, arquivo);
+
+    // Escreve os quartos
+    fwrite(hotel->quartos, sizeof(struct CaracteristicasQuarto), hotel->numQuartos, arquivo);
+
+    // Escreve os clientes provisórios
+    fwrite(hotel->clientesProvisorios, sizeof(struct Cliente), hotel->numClientesProvisorios, arquivo);
+
+    // Escreve os clientes definitivos
+    fwrite(hotel->clientesDefinitivos, sizeof(struct Cliente), hotel->numClientes, arquivo);
+
+    // Escreve as reservas
+    fwrite(hotel->reservas, sizeof(struct Reserva), hotel->numReservas, arquivo);
+
+    fclose(arquivo);
+}
+
+
+void carregarHotel(struct Hotel *hotel) {
+    FILE *arquivo = fopen("hotel.bin", "rb");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para leitura.\n");
+        return;
+    }
+
+    // Lê os dados do hotel
+    fread(hotel, sizeof(struct Hotel), 1, arquivo);
+
+    // Lê os quartos
+    fread(hotel->quartos, sizeof(struct CaracteristicasQuarto), hotel->numQuartos, arquivo);
+
+    // Lê os clientes provisórios
+    fread(hotel->clientesProvisorios, sizeof(struct Cliente), hotel->numClientesProvisorios, arquivo);
+
+    // Lê os clientes definitivos
+    fread(hotel->clientesDefinitivos, sizeof(struct Cliente), hotel->numClientes, arquivo);
+
+    // Lê as reservas
+    fread(hotel->reservas, sizeof(struct Reserva), hotel->numReservas, arquivo);
+
+    fclose(arquivo);
+}
+
 
 
 
@@ -287,9 +443,12 @@ void menu(struct Hotel *hotel) {
             case 4:
                 printf("1. Check-in\n");
                 printf("2. Check-out\n");
+                printf("3. Listar reservas com check-in\n");
+                printf("4. Listar reservas com check-out\n");
+                            
                 printf("Escolha uma sub-opcao: ");
                 scanf("%d", &subOpcao);
-                
+                            
                 switch (subOpcao) {
                     case 1:
                         checkIn(hotel, &ultimoCodigoDefinitivo);
@@ -356,42 +515,6 @@ void menu(struct Hotel *hotel) {
 }
 
 
-void criarReservaTeste(struct Hotel *hotel, int *ultimoNumeroReserva) {
-    if (hotel->numReservas >= 1000) {
-        printf("Limite de reservas atingido.\n");
-        return;
-    }
-
-    struct Reserva novaReserva;
-
-    strcpy(novaReserva.dataReserva, "01/01");
-
-    novaReserva.cliente = &hotel->clientesDefinitivos[0]; // Assume que existe pelo menos um cliente definitivo
-
-    novaReserva.codigoQuarto = 10101; // Assume que o quarto 101 existe
-
-    strcpy(novaReserva.dataCheckIn, "04/02");
-    strcpy(novaReserva.dataCheckOut, "04/07");
-
-    novaReserva.numDias = calcularDiferencaDias(novaReserva.dataCheckIn, novaReserva.dataCheckOut);
-
-    if (!verificarDisponibilidadeQuarto(hotel, novaReserva.codigoQuarto, novaReserva.dataCheckIn) ||
-        !verificarDisponibilidadeQuarto(hotel, novaReserva.codigoQuarto, novaReserva.dataCheckOut)) {
-        printf("O quarto nao esta disponível nas datas selecionadas.\n");
-        return;
-    }
-
-    novaReserva.numPessoas = 1;
-
-    novaReserva.situacaoReserva = 'P';  // Provisoria
-    novaReserva.numeroReserva = ++(*ultimoNumeroReserva);
-
-    strcpy(novaReserva.observacoes, "Reserva de teste");
-
-    hotel->reservas[hotel->numReservas++] = novaReserva;
-
-    printf("\nReserva de teste criada com sucesso.\n");
-}
 
 
 int obterDesignacaoQuartoPorReserva(struct Hotel* hotel, int numeroReserva) {

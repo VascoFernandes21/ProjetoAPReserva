@@ -266,46 +266,6 @@ void moverCliente(int idClienteProvisorio, struct Cliente* clientesProvisorios, 
 //teste
 
 
-void criarClientesProvisoriosTeste(struct Hotel *hotel, int *ultimoCodigoProvisorio) {
-    struct Cliente clientesTeste[5] = {
-        {++(*ultimoCodigoProvisorio), "Cliente 1P", "Morada 1", "1234-567", "Localidade 1", "123456789", "01/01", 'N', PROVISORIA},
-        {++(*ultimoCodigoProvisorio), "Cliente 2P", "Morada 2", "2345-678", "Localidade 2", "234567890", "02/02", 'V', PROVISORIA},
-        {++(*ultimoCodigoProvisorio), "Cliente 3P", "Morada 3", "3456-789", "Localidade 3", "345678901", "03/03", 'E', PROVISORIA},
-        {++(*ultimoCodigoProvisorio), "Cliente 4P", "Morada 4", "4567-890", "Localidade 4", "456789012", "04/04", 'N', PROVISORIA},
-        {++(*ultimoCodigoProvisorio), "Cliente 5P", "Morada 5", "5678-901", "Localidade 5", "567890123", "05/05", 'V', PROVISORIA}
-    };
 
-    for (int i = 0; i < 5; i++) {
-        if (hotel->numClientesProvisorios >= 1000) {
-            printf("Limite de clientes provisorios atingido.\n");
-            return;
-        }
-
-        hotel->clientesProvisorios[hotel->numClientesProvisorios++] = clientesTeste[i];
-    }
-
-    printf("\nClientes provisorios de teste criados com sucesso.\n");
-}
-
-void criarClientesDefinitivosTeste(struct Hotel *hotel, int *ultimoCodigoDefinitivo) {
-    struct Cliente clientesTeste[5] = {
-        {++(*ultimoCodigoDefinitivo), "Cliente 1D", "Morada 1", "1234-567", "Localidade 1", "123456789", "01/01", 'N', DEFINITIVA},
-        {++(*ultimoCodigoDefinitivo), "Cliente 2D", "Morada 2", "2345-678", "Localidade 2", "234567890", "02/02", 'V', DEFINITIVA},
-        {++(*ultimoCodigoDefinitivo), "Cliente 3D", "Morada 3", "3456-789", "Localidade 3", "345678901", "03/03", 'E', DEFINITIVA},
-        {++(*ultimoCodigoDefinitivo), "Cliente 4D", "Morada 4", "4567-890", "Localidade 4", "456789012", "04/04", 'N', DEFINITIVA},
-        {++(*ultimoCodigoDefinitivo), "Cliente 5D", "Morada 5", "5678-901", "Localidade 5", "567890123", "05/05", 'V', DEFINITIVA}
-    };
-
-    for (int i = 0; i < 5; i++) {
-        if (hotel->numClientes >= 1000) {
-            printf("Limite de clientes definitivos atingido.\n");
-            return;
-        }
-
-        hotel->clientesDefinitivos[hotel->numClientes++] = clientesTeste[i];
-    }
-
-    printf("\nClientes definitivos de teste criados com sucesso.\n");
-}
 
 

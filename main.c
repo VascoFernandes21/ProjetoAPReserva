@@ -13,15 +13,9 @@ int main() {
     int ultimoNumeroReserva = 0;
     int ultimoNumeroQuarto = 0; // Define this variable
 
-    inicializarQuartos(&hotel); // Initialize the rooms
-    inicializarHotel(&hotel); // Initialize the hotel
-    inicializarPrecosBase(&hotel); // Initialize the base prices
-    criarQuartosTeste(&hotel); // Create test rooms
-    criarClientesDefinitivosTeste(&hotel, &ultimoCodigoDefinitivo); // Create test definitive clients
-    criarClientesProvisoriosTeste(&hotel, &ultimoCodigoProvisorio); // Create test provisional clients
-    criarReservaTeste(&hotel, &ultimoNumeroReserva); 
+    carregarHotel(&hotel);
+    menu(&hotel); // Display the menu
+    salvarHotel(&hotel);
     
 
-
-    menu(&hotel); // Display the menu
 }

@@ -7,6 +7,8 @@
 #define PROVISORIA 0
 #define DEFINITIVA 1
 
+void salvarHotel(struct Hotel *hotel);
+void carregarHotel(struct Hotel *hotel);
 void inicializarPrecosBase(struct Hotel *hotel);
 void inicializarSobretaxas(struct Hotel *hotel);
 void inicializarValoresSuplementares(struct Hotel *hotel);
@@ -58,6 +60,10 @@ double calcularValorTotal(struct Hotel *hotel, int numeroReserva);
 void alterarReserva(struct Hotel *hotel, int numeroReserva);
 void apagarReserva(struct Hotel *hotel, int numeroReserva);
 double solicitarServicosUtilizados(struct Hotel *hotel, int idServico);
+void listarReservasCheckIn(struct Hotel *hotel, char *dataInicial, char *dataFinal);
+void listarReservasCheckOut(struct Hotel *hotel, char *dataInicial, char *dataFinal);
+
+
 
 
 //testes

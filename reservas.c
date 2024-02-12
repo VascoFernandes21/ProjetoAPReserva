@@ -505,3 +505,21 @@ void apagarReserva(struct Hotel *hotel, int numeroReserva) {
         printf("Nenhuma reserva encontrada com o numero fornecido.\n");
     }
 }
+
+void listarReservasCheckIn(struct Hotel *hotel, char *dataInicial, char *dataFinal) {
+    printf("Reservas com check-in entre %s e %s:\n", dataInicial, dataFinal);
+    for (int i = 0; i < hotel->numReservas; i++) {
+        if (strcmp(hotel->reservas[i].dataCheckIn, dataInicial) >= 0 && strcmp(hotel->reservas[i].dataCheckIn, dataFinal) <= 0) {
+            printf("Reserva %d, Quarto %d\n", hotel->reservas[i].numeroReserva, hotel->reservas[i].codigoQuarto);
+        }
+    }
+}
+
+void listarReservasCheckOut(struct Hotel *hotel, char *dataInicial, char *dataFinal) {
+    printf("Reservas com check-out entre %s e %s:\n", dataInicial, dataFinal);
+    for (int i = 0; i < hotel->numReservas; i++) {
+        if (strcmp(hotel->reservas[i].dataCheckOut, dataInicial) >= 0 && strcmp(hotel->reservas[i].dataCheckOut, dataFinal) <= 0) {
+            printf("Reserva %d, Quarto %d\n", hotel->reservas[i].numeroReserva, hotel->reservas[i].codigoQuarto);
+        }
+    }
+}

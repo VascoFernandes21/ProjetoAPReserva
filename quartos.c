@@ -6,11 +6,6 @@
 #include <stdlib.h>
 #include "funcoes.h"
 
-void inicializarQuartos(struct Hotel *hotel) {
-    for (int i = 0; i < 400; i++) {
-        hotel->quartos[i].denominacao = 0;
-    }
-}
 
 void criarQuarto(struct Hotel *hotel) {
     int torre, andar, numeroQuarto;
@@ -204,27 +199,7 @@ void removerQuartoPorDenominacao(struct Hotel *hotel) {
 
 //testeee
 
-void criarQuartosTeste(struct Hotel *hotel) {
-    struct CaracteristicasQuarto quartosTeste[] = {
-        { .denominacao = 10101, .vista = 'P', .qualidade = 'B', .ocupacaoMaxima = 'D', .torre = 1, .andar = 1, .numeroQuarto = 1 },
-        { .denominacao = 10201, .vista = 'P', .qualidade = 'S', .ocupacaoMaxima = 'D',  .torre = 1, .andar = 2, .numeroQuarto = 1 },
-        { .denominacao = 10301, .vista = 'M', .qualidade = 'B', .ocupacaoMaxima = 'T',  .torre = 1, .andar = 3, .numeroQuarto = 1 },
-        { .denominacao = 10401, .vista = 'P', .qualidade = 'S', .ocupacaoMaxima = 'F',  .torre = 1, .andar = 4, .numeroQuarto = 1 },
-        // Continue adicionando quartos conforme necessario
-    };
 
-    int numQuartosTeste = sizeof(quartosTeste) / sizeof(struct CaracteristicasQuarto);
-
-    for (int i = 0; i < numQuartosTeste; i++) {
-        if (hotel->numQuartos >= 2 * 200) {
-            printf("O hotel ja atingiu o limite de quartos.\n");
-            return;
-        }
-
-        hotel->quartos[hotel->numQuartos++] = quartosTeste[i]; // Incrementa numQuartos após adicionar o quarto
-        printf("Quarto %d criado com sucesso.\n", quartosTeste[i].denominacao);
-    }
-}
 
 bool verificarDisponibilidadeQuarto(struct Hotel *hotel, int codigoQuarto, char *data) {
     for (int i = 0; i < hotel->numReservas; i++) {
