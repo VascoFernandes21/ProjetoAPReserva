@@ -374,7 +374,6 @@ void criarReservaTeste(struct Hotel *hotel, int *ultimoNumeroReserva) {
     strcpy(novaReserva.dataCheckOut, "04/07");
 
     novaReserva.numDias = calcularDiferencaDias(novaReserva.dataCheckIn, novaReserva.dataCheckOut);
-    printf("Numero de dias: %d\n", novaReserva.numDias);
 
     if (!verificarDisponibilidadeQuarto(hotel, novaReserva.codigoQuarto, novaReserva.dataCheckIn) ||
         !verificarDisponibilidadeQuarto(hotel, novaReserva.codigoQuarto, novaReserva.dataCheckOut)) {

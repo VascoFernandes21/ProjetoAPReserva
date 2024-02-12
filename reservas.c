@@ -211,79 +211,79 @@ void mostrarReservas(struct Hotel *hotel) {
     }
 }
 
-void checkIn(struct Hotel *hotel, int *ultimoCodigoDefinitivo) {
-    int numReserva;
-    char confirmacao;
-    struct Cliente* cliente = NULL;
-    struct Reserva* reserva = NULL;
-    int indexClienteProvisorio = -1;
-    double valorTotal = 0.0; // Definindo valorTotal aqui para que possa ser acessado mais tarde
+    void checkIn(struct Hotel *hotel, int *ultimoCodigoDefinitivo) {
+        int numReserva;
+        char confirmacao;
+        struct Cliente* cliente = NULL;
+        struct Reserva* reserva = NULL;
+        int indexClienteProvisorio = -1;
+        double valorTotal = 0.0; // Definindo valorTotal aqui para que possa ser acessado mais tarde
 
-    // Solicita o numero da reserva
-    printf("Numero de reserva: ");
-    scanf("%d", &numReserva);
-    getchar(); // Remove newline character
+        // Solicita o numero da reserva
+        printf("Numero de reserva: ");
+        scanf("%d", &numReserva);
+        getchar(); // Remove newline character
 
-    // Solicita confirmacao para realizar o check-in
-    printf("Deseja fazer check-in? (S/N): ");
-    scanf(" %c", &confirmacao);
-    getchar();
-    confirmacao = toupper(confirmacao); // Converte a entrada para maiusculas
+        // Solicita confirmacao para realizar o check-in
+        printf("Deseja fazer check-in? (S/N): ");
+        scanf(" %c", &confirmacao);
+        getchar();
+        confirmacao = toupper(confirmacao); // Converte a entrada para maiusculas
 
-    if (confirmacao == 'S') {
-        // Procura o cliente e a reserva com base no numero de reserva
-        for (int i = 0; i < hotel->numClientes; i++) {
-            if (hotel->clientesDefinitivos[i].codigo == numReserva) {
-                cliente = &hotel->clientesDefinitivos[i];
-                break;
-            }
-        }
-
-        for (int i = 0; i < hotel->numClientesProvisorios; i++) {
-            if (hotel->clientesProvisorios[i].codigo == numReserva) {
-                cliente = &hotel->clientesProvisorios[i];
-                indexClienteProvisorio = i;
-                break;
-            }
-        }
-
-        for (int i = 0; i < hotel->numReservas; i++) {
-            if (hotel->reservas[i].numeroReserva == numReserva) {
-                reserva = &hotel->reservas[i];
-                break;
-            }
-        }
-
-        // Se o cliente e a reserva foram encontrados
-        if(cliente != NULL && reserva != NULL) {
-            // Se o cliente e provisório
-            if (cliente->estadoFicha == PROVISORIA) {
-                // Move o cliente para o array de clientes definitivos
-                moverCliente(cliente->codigo, hotel->clientesProvisorios, &hotel->numClientesProvisorios, hotel->clientesDefinitivos, &hotel->numClientes);
+        if (confirmacao == 'S') {
+            // Procura o cliente e a reserva com base no numero de reserva
+            for (int i = 0; i < hotel->numClientes; i++) {
+                if (hotel->clientesDefinitivos[i].codigo == numReserva) {
+                    cliente = &hotel->clientesDefinitivos[i];
+                    break;
+                }
             }
 
-            // Atualiza o estado da ficha do cliente e a situacao da reserva
-            cliente->estadoFicha = DEFINITIVA;
-            reserva->situacaoReserva = 'C';
-            printf("Check-in realizado com sucesso.\n");
+            for (int i = 0; i < hotel->numClientesProvisorios; i++) {
+                if (hotel->clientesProvisorios[i].codigo == numReserva) {
+                    cliente = &hotel->clientesProvisorios[i];
+                    indexClienteProvisorio = i;
+                    break;
+                }
+            }
 
-            // Calcula e imprime o valor total
-            valorTotal = calcularValorTotal(hotel, reserva->numeroReserva);
-            if (valorTotal >= 0) {
-                printf("O valor total a pagar e: %.2f\n", valorTotal);
+            for (int i = 0; i < hotel->numReservas; i++) {
+                if (hotel->reservas[i].numeroReserva == numReserva) {
+                    reserva = &hotel->reservas[i];
+                    break;
+                }
+            }
+
+            // Se o cliente e a reserva foram encontrados
+            if(cliente != NULL && reserva != NULL) {
+                // Se o cliente e provisório
+                if (cliente->estadoFicha == PROVISORIA) {
+                    // Move o cliente para o array de clientes definitivos
+                    moverCliente(cliente->codigo, hotel->clientesProvisorios, &hotel->numClientesProvisorios, hotel->clientesDefinitivos, &hotel->numClientes);
+                }
+
+                // Atualiza o estado da ficha do cliente e a situacao da reserva
+                cliente->estadoFicha = DEFINITIVA;
+                reserva->situacaoReserva = 'C';
+                printf("Check-in realizado com sucesso.\n");
+
+                // Calcula e imprime o valor total
+                valorTotal = calcularValorTotal(hotel, reserva->numeroReserva);
+                if (valorTotal >= 0) {
+                    printf("O valor total a pagar e: %.2f\n", valorTotal);
+                } else {
+                    printf("Nao foi possível calcular o valor total.\n");
+                }
+                registarPagamento(hotel, reserva, valorTotal);
             } else {
-                printf("Nao foi possível calcular o valor total.\n");
+                printf("Cliente ou reserva nao encontrados.\n");
             }
-            registarPagamento(hotel, reserva, valorTotal);
         } else {
-            printf("Cliente ou reserva nao encontrados.\n");
+            printf("Check-in cancelado.\n");
         }
-    } else {
-        printf("Check-in cancelado.\n");
     }
-}
 
-void checkOut(struct Hotel *hotel) {
+    void checkOut(struct Hotel *hotel) {
     int codigoReserva;
     printf("Por favor, insira o código da reserva:\n");
     scanf("%d", &codigoReserva);
@@ -297,9 +297,7 @@ void checkOut(struct Hotel *hotel) {
     }
 
     if (reserva != NULL) {
-        reserva->situacaoReserva = 'F';
-
-
+        reserva->situacaoReserva = 'F'; // Atualiza a situação da reserva para finalizada
 
         char utilizouServicos;
         printf("Usufruiu de serviços extras? (S/N)\n");
@@ -331,17 +329,17 @@ void checkOut(struct Hotel *hotel) {
                 }
             }
             printf("O valor total dos serviços utilizados é: %.2f\n", valorTotalServicos);
-            // Registar o pagamento dos serviços extras
+            // Registra o pagamento dos serviços extras
             registarPagamento(hotel, reserva, valorTotalServicos);
         }
 
-
-        // Apagar a reserva após o checkout
+        // Apaga a reserva após o checkout
         apagarReserva(hotel, codigoReserva);
     } else {
         printf("Reserva não encontrada.\n");
     }
 }
+
 
 double calcularValorTotal(struct Hotel *hotel, int numeroReserva) {
     int codigoQuarto = obterDesignacaoQuartoPorReserva(hotel, numeroReserva);
